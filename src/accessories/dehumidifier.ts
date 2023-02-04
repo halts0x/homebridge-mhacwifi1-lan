@@ -143,7 +143,7 @@ export class DehumidifierService {
          this.platform.log.debug('Triggered GET CurrentRelativeHumidity');
 
          // set this to a valid value for CurrentRelativeHumidity
-const currentValue = config.HumidPlaceholder;
+const currentValue = this.config.HumidPlaceholder;
         return currentValue;
   }
     private setTargetHumidifierDehumidifierState(value: CharacteristicValue) {
