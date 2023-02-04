@@ -92,6 +92,7 @@
       "title": "Advanced Settings",
       "expandable": true,
       "items": [
+        "HumidPlaceholder",
         "slowThreshold",
         "minSetpoint",
         "maxSetpoint",
