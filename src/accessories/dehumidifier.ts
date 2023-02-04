@@ -1,4 +1,4 @@
-import { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
+mport { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
 import { MitsubishiHeavyAirconPlatform } from '../platform';
 import { MhacModeTypes, MHACWIFI1 } from './device';
 
@@ -35,6 +35,8 @@ export class DehumidifierService {
             .setProps({ minValue: 0, maxValue: 100, minStep: 25 })
             .onGet(this.getRotationSpeed.bind(this))
             .onSet(this.setRotationSpeed.bind(this));
+        this.service.getCharacteristic(Characteristic.CurrentRelativeHumidity)
+            .onGet(this.handleCurrentRelativeHumidityGet.bind(this));
         this.service.getCharacteristic(Characteristic.SwingMode)
             .onGet(this.getSwingMode.bind(this))
             .onSet(this.setSwingMode.bind(this));
@@ -48,7 +50,6 @@ export class DehumidifierService {
             .onSet(this.setTargetHumidifierDehumidifierState.bind(this));
 
     }
-
     updateHomeBridgeState(): void {
         if (!this.device.get.valid())
             return
@@ -57,6 +58,8 @@ export class DehumidifierService {
         this.syncCharacteristic('RotationSpeed', this.getRotationSpeed());
         this.syncCharacteristic('SwingMode', this.getSwingMode());
         this.syncCharacteristic('TargetHumidifierDehumidifierState', this.getTargetHumidifierDehumidifierState());
+        this.syncCharacteristic('CurrentRelativeHumidity', this.handleCurrentRelativeHumidityGet());
+
     }
 
     private syncCharacteristic(characteristic: string, value: number): void {
@@ -87,8 +90,8 @@ export class DehumidifierService {
         }
         this.device.set.active(active);
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+       ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private getCurrentHumidifierDehumidifierState(): number {
         this.checkValid()
         const active = this.device.get.active();
@@ -130,13 +133,19 @@ export class DehumidifierService {
         this.platform.log.debug(`Set characteristic HumidifierDehumidifier.SwingMode -> ${swing}`)
         this.device.set.swingMode(swing)
     }
-
+    
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private getTargetHumidifierDehumidifierState(): number {
         this.checkValid()
         return this.platform.Characteristic.TargetHumidifierDehumidifierState.DEHUMIDIFIER
     }
+    private handleCurrentRelativeHumidityGet(): number  {
+         this.platform.log.debug('Triggered GET CurrentRelativeHumidity');
 
+         // set this to a valid value for CurrentRelativeHumidity
+const currentValue = config.HumidPlaceholder;
+        return currentValue;
+  }
     private setTargetHumidifierDehumidifierState(value: CharacteristicValue) {
         if (value != this.platform.Characteristic.TargetHumidifierDehumidifierState.DEHUMIDIFIER) {
             this.platform.log.error(`Invalid state for TargetHumidifierDehumidifierState => ${value}`)
