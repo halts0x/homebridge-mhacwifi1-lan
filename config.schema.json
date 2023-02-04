@@ -33,6 +33,14 @@
         "required": true,
         "default": "admin"
       },
+      "HumidPlaceholder;": {
+        "title": "Humidity placeholder",
+        "type": "number",
+        "required": true,
+        "placeholder": "51",
+        "minimum": 0,
+        "maximum": 100
+      },
       "minSetpoint": {
         "title": "Minimal allowed temperature (celsius)",
         "type": "number",
