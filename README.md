@@ -1,3 +1,6 @@
+Added custom constant humidity value to help range
+
+
 # Homebridge Plugin for LAN Control of Mitsubishi Heavy Industries MH-AC-WIFI-1
 
 [![Version](https://img.shields.io/npm/v/homebridge-mhacwifi1-lan)](https://www.npmjs.com/package/homebridge-mhacwifi1-lan) &nbsp;
