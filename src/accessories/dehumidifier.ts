@@ -170,8 +170,9 @@ export class DehumidifierService {
 		}
       return  l_humidity_RH
     } else {
-return = this.platform.config.HumidPlaceholder;
-  }
+return this.platform.config.HumidPlaceholder
+    }
+    }
     private setTargetHumidifierDehumidifierState(value: CharacteristicValue) {
         if (value != this.platform.Characteristic.TargetHumidifierDehumidifierState.DEHUMIDIFIER) {
             this.platform.log.error(`Invalid state for TargetHumidifierDehumidifierState => ${value}`)
