@@ -143,6 +143,33 @@ export class DehumidifierService {
          this.platform.log.debug('Triggered GET CurrentRelativeHumidity');
 
          // set this to a valid value for CurrentRelativeHumidity
+        ////////////// Probably should fix this
+        var that = this;
+	this.config.AirIP = config["AirIP"];
+	this.AirUser = config["AirUser"];
+	this.AirPass = config["AirPass"];
+        var countdelay = number;
+	//add slower update
+        
+        exec('smbget -q -O -U ' + this.AirUser + '%' + this.AirPass + ' smb://' + this.AirIP + '/airvisual/latest_config_measurements.json', (error, stdout, stderr) => {
+		if (that.logging) {
+			that.log("[stdout]: " + JSON.stringify(stdout));
+			that.log("[error]: " + JSON.stringify(error));
+			that.log("[stderr]: " + JSON.stringify(stderr));
+		}
+		if(stdout != '') {
+			that.airdata = JSON.parse(stdout);
+		}
+	});
+    if(that.airdata.measurements) {
+		var l_humidity_RH;
+		if(Array.isArray(that.airdata.measurements)) {
+			l_humidity_RH = that.airdata.measurements[0].humidity_RH;
+		} else {
+			l_humidity_RH = that.airdata.measurements.humidity_RH;
+		}
+      return  l_humidity_RH
+    } else {
 return = this.platform.config.HumidPlaceholder;
   }
     private setTargetHumidifierDehumidifierState(value: CharacteristicValue) {
